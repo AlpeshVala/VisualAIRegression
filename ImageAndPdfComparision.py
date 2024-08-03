@@ -88,6 +88,33 @@ def imageDifferences(imageA,imageB):
     cv2.imshow("Thresh",thresh)
     cv2.waitKey(0)
 
+def hide_text_area(original_img, keyword):
+    gray = cv2.cvtColor(original_img, cv2.COLOR_BGR2GRAY)
+    th = cv2.adaptiveThreshold(gray, 255 , cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV,13,3)
+    black =np.zeros([gray.shape[0] + 2, gray.shape[1] + 2],np.uint8)
+    mask =cv2.floodFill(th.copy(), black, (0,0), 0, 0 , 0, flags=8)[1]
+    kernel_length = 15
+    horizontal_kernel = cv2.getStructuralElement(cv2.MORPH_RECT,(kernel_length,1))
+    dilate = cv2.dilate(mask,horizontal_kernel,iterations=1)
+    img2 = original_img.copy()
+    contours = cv2.findContours(dilate,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
+    contours = imutils.grab_contours(contours)
+    flag = 0
+    for c in contours:
+        x, y, w, h =  cv2.boundingRect(c)
+        roi = th[y:y+h,x:x + w]
+        roi = cv2.fastNlMeansDenoising(roi,None,10,21,7)
+        text = pytesseract.image_to_string(roi)
+        print(text)
+        if keyword.lower() in text.lower():
+            flag = 1
+            img2 = cv2.rectangle(original_img,(x,y),(x+w , y+h),(0,0,0),-1)
+    if flag == 0:
+        print("Word not found")
+    cv2.imshow("image",cv2.cvtColor(img2,cv2.COLOR_BGR2GRAY))
+    cv2.waitKey(0)
+    return img2
+
 #Sample Test
 
 @pytest.mark.order1
