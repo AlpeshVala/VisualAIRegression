@@ -44,4 +44,39 @@ def filterKeywordsRakeMethod():
     return filteredRakeKeywordLst
 
 
-
+def validateKeywordsInTestScripts(testDescriptionDf,filteredRakeKeywordLst):
+    testDescLst = testDescriptionDf.values.tolist()
+    formattedTestDesc = []
+    scriptsIncludedInRegression = []
+    flag = 2
+    for testDesc in testDescLst:
+        print('Test Script Description value is: ',testDesc)
+        if '_' in testDesc:
+            testDesc = testDesc.replace("_"," ")
+        if '-' in testDesc:
+            testDesc = testDesc.replace("-"," ")
+        formattedTestDesc.append(testDesc)
+    testDescriptionDf = pd.DataFrame(data = {"UniqueTestDescriptionValues": formattedTestDesc})
+    testDescriptionDf.to_csv("path to file")
+    for testDescription in formattedTestDesc:
+        for keywordPhrase in filteredRakeKeywordLst:
+            if keywordPhrase.lower() in testDescription.lower():
+                flag = 1
+                scriptsIncludedInRegression.append(testDescription)
+                break
+            else:
+                flag= 2
+    regressionDecisionLst = []
+    flag1 = 2
+    for originalTestScript in testDescriptionDf['UniqueTestDescriptionValue']:
+        for regressionScript in scriptsIncludedInRegression:
+            if regressionScript.lower() == originalTestScript.lower():
+                flag1 = 1
+                regressionDecisionLst.append('Keyword found in Test Script Description')
+                break
+            else:
+                flag1 = 2
+        if(flag1 == 2):
+            regressionDecisionLst.append('Keyword not found in Test Script Description')
+    testDescriptionDf.insert(1,column="RegressionInclusionDecision",value=regressionDecisionLst)
+    testDescriptionDf.to_csv("File Path")
