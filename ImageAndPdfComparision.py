@@ -100,7 +100,7 @@ def hide_text_area(original_img, keyword):
     contours = cv2.findContours(dilate,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
     contours = imutils.grab_contours(contours)
     flag = 0
-    for c in contours:
+    for c in contours:+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         x, y, w, h =  cv2.boundingRect(c)
         roi = th[y:y+h,x:x + w]
         roi = cv2.fastNlMeansDenoising(roi,None,10,21,7)
