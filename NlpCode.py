@@ -119,7 +119,7 @@ def validateKeywordsInTestScriptName(testNameDf,filteredRakeKeywordLst):
                 flag1 = 2
         if (flag1 == 2):
             regressionDecisionLstName.append('Keyword not found in Test Script Name')
-            
+
 
 
 
