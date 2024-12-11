@@ -80,3 +80,57 @@ def validateKeywordsInTestScripts(testDescriptionDf,filteredRakeKeywordLst):
             regressionDecisionLst.append('Keyword not found in Test Script Description')
     testDescriptionDf.insert(1,column="RegressionInclusionDecision",value=regressionDecisionLst)
     testDescriptionDf.to_csv("File Path")
+
+
+def validateKeywordsInTestScriptName(testNameDf,filteredRakeKeywordLst):
+    testNameDfLst = testNameDf.values.tolist()
+    formattedTestNameDf = []
+    scriptsIncludedInRegressionNme = []
+    flag = 2
+    for testScriptName in testNameDfLst:
+        testScriptName = testScriptName.replace("_"," ")
+        testScriptName = testScriptName.replace("-"," ")
+        formattedTestNameDf.append(testScriptName)
+    testNameDf = pd.DataFrame(data = {"UniqueTestNameValues":formattedTestNameDf})
+    testNameDf.to_csv("Specify file path")
+    #Checkfor presence of keywords in test script name
+
+    for testCaseName in formattedTestNameDf:
+        for keywordPhrase in filteredRakeKeywordLst:
+            if keywordPhrase.lower() in testCaseName.lower():
+                flag = 1
+                print('Test script should be included in regression based on name')
+                scriptsIncludedInRegressionNme.append(testCaseName)
+                break
+            else:
+                flag = 2
+        if flag == 2
+            print('Test script should not be included in regression based on name')
+
+    regressionDecisionLstName = []
+    flag1 = 2
+    for originalTestScriptName in testNameDf['UniqueTestNameValues']:
+        for regressionScriptName in scriptsIncludedInRegressionNme:
+            if regressionScriptName.lower() == originalTestScriptName.lower():
+                flag1 = 1
+                regressionDecisionLstName.append('Keyword foundin Test Script Name')
+                break
+            else:
+                flag1 = 2
+        if (flag1 == 2):
+            regressionDecisionLstName.append('Keyword not found in Test Script Name')
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
