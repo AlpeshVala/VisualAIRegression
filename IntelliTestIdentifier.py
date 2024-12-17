@@ -194,8 +194,11 @@ def applyRandomForestClasssifierModel(X_train,X_test,y_train,y_test):
     rfClassificationReport = classification_report(y_test,y_pred_test_rf_cv)
     print('Classification report for RF model is : ',rfClassificationReport)
 
+    #Please give path of prediction.csv file generated from regression alogorithm above
     regressionOutputData = pd.read_csv('path of prediction.csv file')
-    regressionOutputData.insert('colno',column = "PredictedTest+S+criptPriority",value=y_pred_test_rf_cv)
+    
+    #Give column number as required where predicted test script priority needs to be appended.Placeholder colno has been mentioned for now 
+    regressionOutputData.insert('colno',column = "PredictedTestScriptPriority",value=y_pred_test_rf_cv)
     regressionOutputData.to_csv('mention path of FinalPrediction.csv',index=False)
 
 test_metrics_data = pd.read_csv("Mention path of train data sheet")
